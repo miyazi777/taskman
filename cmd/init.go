@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/miyazi777/taskman/db"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +14,9 @@ var initCmd = &cobra.Command{
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
+		db.InitDb()
 		fmt.Println("init command.")
+
 		return nil
 	},
 }
