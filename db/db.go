@@ -14,21 +14,42 @@ func InitDb() {
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
+	defer db.Close()
 
-	_, err = db.Exec(`CREATE TABLE "world" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "country" VARCHAR(255), "capital" VARCHAR(255))`)
+	var query string
+	query = `
+		CREATE TABLE projects (
+		  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			title VARCHAR(255) NOT NULL,
+			add_date DATETIME NOT NULL,
+			update_date DATETIME NOT NULL
+		)
+	`
+	_, err = db.Exec(query)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 
-	_, err = db.Exec(
-		`INSERT INTO "world" ("country", "capital") VALUES (?, ?) `,
-		"日本",
-		"test",
-	)
+	query = `
+		CREATE TABLE tasks (
+		  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			project_id INTEGER NOT NULL,
+			title VARCHAR(255) NOT NULL,
+			status VARCHAR(32),
+			due_date DATE,
+			priority INTEGER,
+			add_date DATETIME NOT NULL,
+			update_date DATETIME NOT NULL,
+      foreign key (project_id) references projects(id)
+		)
+	`
+
+	_, err = db.Exec(query)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
+		return
 	}
-
-	db.Close()
 }
