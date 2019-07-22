@@ -10,11 +10,14 @@ var projectAddCmd = &cobra.Command{
 	Short: "Project add command.",
 	Long:  "Project add command.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("project add command.")
+		title, _ := cmd.PersistentFlags().GetString("title")
+
+		fmt.Println("project add command. : " + title)
 		return nil
 	},
 }
 
 func init() {
+	projectAddCmd.PersistentFlags().StringP("title", "t", "", "project title")
 	projectCmd.AddCommand(projectAddCmd)
 }
