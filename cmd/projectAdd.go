@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/miyazi777/taskman/db"
 	"github.com/miyazi777/taskman/shell"
 	"github.com/spf13/cobra"
 )
@@ -20,6 +21,9 @@ var projectAddCmd = &cobra.Command{
 				return err
 			}
 		}
+
+		project := db.Project{Title: title}
+		projectRepository.Insert(&project)
 
 		fmt.Println("project add command. : " + title)
 		return nil
