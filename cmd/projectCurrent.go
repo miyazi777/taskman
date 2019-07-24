@@ -10,7 +10,12 @@ var projectCurrentCmd = &cobra.Command{
 	Short: "Project current command.",
 	Long:  "Project current command.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("project current command.")
+		project, err := projectRepository.FindByCurrent()
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(project.Title)
 		return nil
 	},
 }

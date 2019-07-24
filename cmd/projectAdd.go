@@ -22,7 +22,13 @@ var projectAddCmd = &cobra.Command{
 			}
 		}
 
-		project := db.Project{Title: title}
+		var current bool = false
+		count := projectRepository.CountByCurrent()
+		if count == 0 {
+			current = true
+		}
+
+		project := db.Project{Title: title, Current: current}
 		projectRepository.Insert(&project)
 
 		fmt.Println("project add command. : " + title)

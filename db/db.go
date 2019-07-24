@@ -6,14 +6,14 @@ import (
 )
 
 func InitDb() {
-	db := GetDbConnection()
+	db := getDbConnection()
 	defer db.Close()
 
 	db.AutoMigrate(&Project{})
 	db.AutoMigrate(&Task{})
 }
 
-func GetDbConnection() *gorm.DB {
+func getDbConnection() *gorm.DB {
 	db, err := gorm.Open("sqlite3", "/tmp/test.db") // TODO dbの場所をどうにかすること
 	if err != nil {
 		panic("データベースへの接続に失敗しました") // TODO エラーハンドリングをどうにかすること
