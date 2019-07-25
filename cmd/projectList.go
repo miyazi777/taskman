@@ -17,7 +17,7 @@ var projectListCmd = &cobra.Command{
 			if project.Current == true {
 				current = "*"
 			}
-			fmt.Printf("%s %s\n", current, project.Title)
+			fmt.Printf("%s %d %s\n", current, project.ID, project.Title)
 		}
 
 		return nil

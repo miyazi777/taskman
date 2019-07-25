@@ -59,7 +59,7 @@ func (p *ProjectRepositoryImpl) GetList() *[]Project {
 	defer db.Close()
 
 	projects := []Project{}
-	db.Find(&projects)
+	db.Order("id desc").Find(&projects)
 
 	return &projects
 }
