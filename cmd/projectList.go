@@ -10,7 +10,16 @@ var projectListCmd = &cobra.Command{
 	Short: "Project list command.",
 	Long:  "Project list command.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("project list command.")
+		projects := projectRepository.GetList()
+
+		for _, project := range *projects {
+			var current string = " "
+			if project.Current == true {
+				current = "*"
+			}
+			fmt.Printf("%s %s\n", current, project.Title)
+		}
+
 		return nil
 	},
 }

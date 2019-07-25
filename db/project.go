@@ -16,6 +16,7 @@ type Projectrepository interface {
 	Insert(project *Project) error
 	FindByCurrent() (*Project, error)
 	CountByCurrent() int
+	GetList() *[]Project
 }
 
 type ProjectRepositoryImpl struct{}
@@ -48,7 +49,17 @@ func (p *ProjectRepositoryImpl) CountByCurrent() int {
 	defer db.Close()
 
 	project := Project{}
-	var count int
+	var count int = 0
 	db.Where("current = ?", true).Find(&project).Count(&count)
 	return count
+}
+
+func (p *ProjectRepositoryImpl) GetList() *[]Project {
+	db := getDbConnection()
+	defer db.Close()
+
+	projects := []Project{}
+	db.Find(&projects)
+
+	return &projects
 }
