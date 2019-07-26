@@ -14,9 +14,11 @@ type Project struct {
 
 type Projectrepository interface {
 	Insert(project *Project) error
+	FindById(id int) *Project
 	FindByCurrent() (*Project, error)
 	CountByCurrent() int
 	GetList() *[]Project
+	DeleteProject(id int)
 }
 
 type ProjectRepositoryImpl struct{}
@@ -27,6 +29,17 @@ func (p *ProjectRepositoryImpl) Insert(project *Project) error {
 
 	db.Create(project)
 	return nil
+}
+
+func (p *ProjectRepositoryImpl) FindById(id int) *Project {
+	db := getDbConnection()
+	defer db.Close()
+
+	project := Project{}
+	if db.First(&project, id).RecordNotFound() {
+		return nil
+	}
+	return &project
 }
 
 func (p *ProjectRepositoryImpl) FindByCurrent() (*Project, error) {
@@ -62,4 +75,11 @@ func (p *ProjectRepositoryImpl) GetList() *[]Project {
 	db.Order("id desc").Find(&projects)
 
 	return &projects
+}
+
+func (p *ProjectRepositoryImpl) DeleteProject(id int) {
+	db := getDbConnection()
+	defer db.Close()
+
+	db.Delete(Project{}, "id = ?", id)
 }
