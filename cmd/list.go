@@ -12,8 +12,6 @@ var listCmd = &cobra.Command{
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		fmt.Println("list command.")
-
 		tasks := taskRepository.GetList()
 
 		for _, task := range *tasks {

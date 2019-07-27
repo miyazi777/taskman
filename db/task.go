@@ -17,6 +17,8 @@ type Task struct {
 type TaskRepository interface {
 	Insert(task *Task) error
 	GetList() *[]Task
+	FindById(id int) *Task
+	DeleteTask(id int)
 }
 
 type TaskRepositoryImpl struct{}
@@ -29,6 +31,17 @@ func (t *TaskRepositoryImpl) Insert(task *Task) error {
 	return nil
 }
 
+func (p *TaskRepositoryImpl) FindById(id int) *Task {
+	db := getDbConnection()
+	defer db.Close()
+
+	task := Task{}
+	if db.First(&task, id).RecordNotFound() {
+		return nil
+	}
+	return &task
+}
+
 func (t *TaskRepositoryImpl) GetList() *[]Task {
 	db := getDbConnection()
 	defer db.Close()
@@ -37,4 +50,11 @@ func (t *TaskRepositoryImpl) GetList() *[]Task {
 	db.Order("id desc").Find(&tasks)
 
 	return &tasks
+}
+
+func (p *TaskRepositoryImpl) DeleteTask(id int) {
+	db := getDbConnection()
+	defer db.Close()
+
+	db.Delete(Task{}, "id = ?", id)
 }
