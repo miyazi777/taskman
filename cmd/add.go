@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/miyazi777/taskman/db"
+	"github.com/miyazi777/taskman/shell"
 	"github.com/spf13/cobra"
 )
 
@@ -11,9 +13,21 @@ var addCmd = &cobra.Command{
 	Short: "",
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		var title string
+		var err error
+		if len(args) == 0 {
+			title, err = shell.EditTextByEditor("")
+			if err != nil {
+				return err
+			}
+		} else {
+			title = args[0]
+		}
 
-		fmt.Println("add command.")
+		task := db.Task{Title: title}
+		taskRepository.Insert(&task)
 
+		fmt.Printf("Add task : %s\n", title)
 		return nil
 	},
 }
