@@ -16,6 +16,7 @@ type Task struct {
 
 type TaskRepository interface {
 	Insert(task *Task) error
+	GetList() *[]Task
 }
 
 type TaskRepositoryImpl struct{}
@@ -26,4 +27,14 @@ func (t *TaskRepositoryImpl) Insert(task *Task) error {
 
 	db.Create(task)
 	return nil
+}
+
+func (t *TaskRepositoryImpl) GetList() *[]Task {
+	db := getDbConnection()
+	defer db.Close()
+
+	tasks := []Task{}
+	db.Order("id desc").Find(&tasks)
+
+	return &tasks
 }

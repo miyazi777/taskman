@@ -14,6 +14,12 @@ var listCmd = &cobra.Command{
 
 		fmt.Println("list command.")
 
+		tasks := taskRepository.GetList()
+
+		for _, task := range *tasks {
+			fmt.Printf("%d %s\n", task.ID, task.Title)
+		}
+
 		return nil
 	},
 }
