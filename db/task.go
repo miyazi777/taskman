@@ -16,6 +16,7 @@ type Task struct {
 
 type TaskRepository interface {
 	Insert(task *Task) error
+	Update(task *Task) error
 	GetList() *[]Task
 	FindById(id int) *Task
 	DeleteTask(id int)
@@ -28,6 +29,14 @@ func (t *TaskRepositoryImpl) Insert(task *Task) error {
 	defer db.Close()
 
 	db.Create(task)
+	return nil
+}
+
+func (t *TaskRepositoryImpl) Update(task *Task) error {
+	db := getDbConnection()
+	defer db.Close()
+
+	db.Save(&task)
 	return nil
 }
 
