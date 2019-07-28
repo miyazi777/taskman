@@ -10,8 +10,9 @@ type Task struct {
 	gorm.Model
 	Title    string     `gorm:"type:varchar(255);not null"`
 	Status   string     `gorm:"type:varchar(32)"`
-	Due_date *time.Time `gorm:""`
+	DueDate  *time.Time `gorm:""`
 	Priority int        `gorm:""`
+	HideFlg  bool
 }
 
 type TaskRepository interface {
