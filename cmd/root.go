@@ -26,7 +26,6 @@ import (
 
 var cfgFile string
 
-var projectRepository db.Projectrepository
 var taskRepository db.TaskRepository
 
 // rootCmd represents the base command when called without any subcommands
@@ -94,6 +93,5 @@ func initConfig() {
 }
 
 func setup() {
-	projectRepository = &db.ProjectRepositoryImpl{}
 	taskRepository = &db.TaskRepositoryImpl{}
 }

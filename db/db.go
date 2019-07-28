@@ -9,7 +9,6 @@ func InitDb() {
 	db := getDbConnection()
 	defer db.Close()
 
-	db.AutoMigrate(&Project{})
 	db.AutoMigrate(&Task{})
 }
 
