@@ -12,7 +12,7 @@ type Task struct {
 	Status   string     `gorm:"type:varchar(32)"`
 	DueDate  *time.Time `gorm:""`
 	Priority int        `gorm:""`
-	HideFlg  bool
+	HideFlg  bool       `gorm:"type:boolean;not null;default false"`
 }
 
 type TaskRepository interface {
@@ -57,7 +57,7 @@ func (t *TaskRepositoryImpl) GetList() *[]Task {
 	defer db.Close()
 
 	tasks := []Task{}
-	db.Order("id desc").Find(&tasks)
+	db.Where("hide_flg = false").Order("id desc").Find(&tasks)
 
 	return &tasks
 }
