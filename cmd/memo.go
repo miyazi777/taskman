@@ -1,18 +1,43 @@
 package cmd
 
 import (
-	"fmt"
+	"errors"
 
+	"github.com/miyazi777/taskman/repository"
+	"github.com/miyazi777/taskman/shell"
 	"github.com/spf13/cobra"
+	"strconv"
 )
 
 var memoCmd = &cobra.Command{
 	Use:   "memo",
 	Short: "",
 	Long:  "",
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) == 0 {
+			return errors.New("Requires task id.")
+		}
 
-		fmt.Println("memo command.")
+		_, err := strconv.Atoi(args[0])
+		if err != nil {
+			return errors.New("Numeric error.")
+		}
+		return nil
+	},
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id, _ := strconv.Atoi(args[0])
+
+		task := taskRepository.FindById(id)
+		if task == nil {
+			return errors.New("Nothing task.")
+		}
+
+		memoPath := repository.GetMemoPath(task.Title)
+
+		err := shell.StartEditor(memoPath)
+		if err != nil {
+			return err
+		}
 
 		return nil
 	},

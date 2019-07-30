@@ -13,7 +13,7 @@ type MemoRepository interface {
 type MemoRepositoryImpl struct{}
 
 func (m *MemoRepositoryImpl) AddMemo(title string) error {
-	path := getMemoPath(title)
+	path := GetMemoPath(title)
 	_, err := os.Create(path)
 	if err != nil {
 		return err
@@ -21,7 +21,7 @@ func (m *MemoRepositoryImpl) AddMemo(title string) error {
 	return nil
 }
 
-func getMemoPath(title string) string {
+func GetMemoPath(title string) string {
 	fileName := title + ".md"
 	return filepath.Join(getWorkDirPath(), fileName)
 }

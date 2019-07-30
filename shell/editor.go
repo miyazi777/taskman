@@ -10,6 +10,22 @@ import (
 
 const EDIT_FILE_PATH string = "/tmp/taskman.txt"
 
+func StartEditor(filePath string) error {
+	var err error
+
+	editor := viper.GetString("editor")
+	if editor == "" {
+		editor = "vi"
+	}
+
+	err = executeEditor(editor, filePath)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func EditTextByEditor(initText string) (string, error) {
 	var err error
 
