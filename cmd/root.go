@@ -20,6 +20,7 @@ import (
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/miyazi777/taskman/db"
+	"github.com/miyazi777/taskman/repository"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -27,6 +28,7 @@ import (
 var cfgFile string
 
 var taskRepository db.TaskRepository
+var memoRepository repository.MemoRepository
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -94,4 +96,5 @@ func initConfig() {
 
 func setup() {
 	taskRepository = &db.TaskRepositoryImpl{}
+	memoRepository = &repository.MemoRepositoryImpl{}
 }

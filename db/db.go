@@ -42,6 +42,7 @@ func getDbPath() string {
 	return filepath.Join(getWorkDirPath(), "tasks.db")
 }
 
+// TODO workDir構造体を作成する
 func getWorkDirPath() string {
 	home, err := homedir.Dir()
 	if err != nil {
