@@ -8,6 +8,7 @@ import (
 
 type MemoRepository interface {
 	AddMemo(title string) error
+	ChangeMemo(oldTitle string, newTitle string) error
 }
 
 type MemoRepositoryImpl struct{}
@@ -15,6 +16,16 @@ type MemoRepositoryImpl struct{}
 func (m *MemoRepositoryImpl) AddMemo(title string) error {
 	path := GetMemoPath(title)
 	_, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *MemoRepositoryImpl) ChangeMemo(oldTitle string, newTitle string) error {
+	oldTitlePath := GetMemoPath(oldTitle)
+	newTitlePath := GetMemoPath(newTitle)
+	err := os.Rename(oldTitlePath, newTitlePath)
 	if err != nil {
 		return err
 	}

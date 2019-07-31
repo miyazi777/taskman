@@ -30,6 +30,7 @@ var titleCmd = &cobra.Command{
 		if task == nil {
 			return errors.New("Not found task")
 		}
+		oldTitle := task.Title
 
 		var err error
 		if len(args) == 1 {
@@ -40,8 +41,10 @@ var titleCmd = &cobra.Command{
 		} else {
 			task.Title = args[1]
 		}
+		// TODO 入力されたファイル名がすでに存在しているかチェックする
 
 		taskRepository.Update(task)
+		memoRepository.ChangeMemo(oldTitle, task.Title)
 
 		return nil
 	},
