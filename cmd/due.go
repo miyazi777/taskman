@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"github.com/spf13/cobra"
 	"strconv"
+	"time"
 )
 
 var dueCmd = &cobra.Command{
@@ -20,8 +20,6 @@ var dueCmd = &cobra.Command{
 			return errors.New("Requires due.")
 		}
 
-		// due部分の日付のバリデーション
-
 		_, err := strconv.Atoi(args[0])
 		if err != nil {
 			return errors.New("Numeric error.")
@@ -29,18 +27,21 @@ var dueCmd = &cobra.Command{
 		return nil
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-
 		id, _ := strconv.Atoi(args[0])
-		//status := args[1]
+
+		dueDate, err := time.Parse("2006/01/02", args[1])
+		if err != nil {
+			return errors.New("Due date format error. Format is yyyy/MM/dd")
+		}
 
 		task := taskRepository.FindById(id)
 		if task == nil {
 			return errors.New("Not found task")
 		}
 
-		fmt.Println("due command.")
-		//task.Status = status
-		//taskRepository.Update(task)
+		task.DueDate = dueDate
+		taskRepository.Update(task)
+
 		return nil
 	},
 }

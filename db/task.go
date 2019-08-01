@@ -8,11 +8,11 @@ import (
 
 type Task struct {
 	gorm.Model
-	Title    string     `gorm:"type:varchar(255);not null"`
-	Status   string     `gorm:"type:varchar(32)"`
-	DueDate  *time.Time `gorm:""`
-	Priority int        `gorm:""`
-	HideFlg  bool       `gorm:"type:boolean;not null;default false"`
+	Title    string    `gorm:"type:varchar(255);not null"`
+	Status   string    `gorm:"type:varchar(32)"`
+	DueDate  time.Time `gorm:""`
+	Priority int       `gorm:""`
+	HideFlg  bool      `gorm:"type:boolean;not null;default false"`
 }
 
 type TaskRepository interface {
