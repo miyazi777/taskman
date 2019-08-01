@@ -14,10 +14,10 @@ var listCmd = &cobra.Command{
 		tasks := taskRepository.GetList()
 
 		tbl, err := prettytable.NewTable([]prettytable.Column{
-			{Header: "ID"},
-			{Header: "TASK"},
-			{Header: "STATUS"},
-			{Header: "DUE_DATE"},
+			{Header: "ID", MinWidth: 3},
+			{Header: "TASK", MinWidth: 32},
+			{Header: "STATUS", MinWidth: 12},
+			{Header: "DUE_DATE", MinWidth: 10},
 		}...)
 		if err != nil {
 			return err
