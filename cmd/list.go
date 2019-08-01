@@ -14,7 +14,12 @@ var listCmd = &cobra.Command{
 		tasks := taskRepository.GetList()
 
 		t := tabby.New()
-		t.AddHeader("ID", "TASK", "STATUS")
+
+		onlyListFlg, _ := cmd.PersistentFlags().GetBool("only-list")
+		if !onlyListFlg {
+			t.AddHeader("ID", "TASK", "STATUS")
+		}
+
 		for _, task := range *tasks {
 			t.AddLine(task.ID, task.Title, task.Status)
 		}
@@ -25,5 +30,6 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
+	listCmd.PersistentFlags().BoolP("only-list", "", false, "display list only")
 	rootCmd.AddCommand(listCmd)
 }
