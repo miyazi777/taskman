@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/cheynewallace/tabby"
 	"github.com/spf13/cobra"
 )
 
@@ -14,9 +13,12 @@ var listCmd = &cobra.Command{
 
 		tasks := taskRepository.GetList()
 
+		t := tabby.New()
+		t.AddHeader("ID", "TASK", "STATUS")
 		for _, task := range *tasks {
-			fmt.Printf("%d %s %s\n", task.ID, task.Title, task.Status)
+			t.AddLine(task.ID, task.Title, task.Status)
 		}
+		t.Print()
 
 		return nil
 	},

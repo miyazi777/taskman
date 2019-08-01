@@ -3,6 +3,7 @@ module github.com/miyazi777/taskman
 go 1.12
 
 require (
+	github.com/cheynewallace/tabby v1.1.0
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/jinzhu/gorm v1.9.10
