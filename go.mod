@@ -13,5 +13,6 @@ require (
 	github.com/miyazi777/git-desc v0.1.2 // indirect
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.4.0
+	github.com/tatsushid/go-prettytable v0.0.0-20141013043238-ed2d14c29939
 	gopkg.in/go-playground/validator.v9 v9.29.1 // indirect
 )

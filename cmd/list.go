@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/cheynewallace/tabby"
 	"github.com/spf13/cobra"
+	"github.com/tatsushid/go-prettytable"
 )
 
 var listCmd = &cobra.Command{
@@ -13,17 +13,25 @@ var listCmd = &cobra.Command{
 
 		tasks := taskRepository.GetList()
 
-		t := tabby.New()
+		tbl, err := prettytable.NewTable([]prettytable.Column{
+			{Header: "ID"},
+			{Header: "TASK"},
+			{Header: "STATUS"},
+		}...)
+		if err != nil {
+			return err
+		}
+		tbl.Separator = " "
 
 		onlyListFlg, _ := cmd.PersistentFlags().GetBool("only-list")
-		if !onlyListFlg {
-			t.AddHeader("ID", "TASK", "STATUS")
+		if onlyListFlg {
+			tbl.NoHeader = true
 		}
 
 		for _, task := range *tasks {
-			t.AddLine(task.ID, task.Title, task.Status)
+			tbl.AddRow(task.ID, task.Title, task.Status)
 		}
-		t.Print()
+		tbl.Print()
 
 		return nil
 	},
