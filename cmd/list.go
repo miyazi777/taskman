@@ -10,8 +10,9 @@ var listCmd = &cobra.Command{
 	Short: "",
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		all, _ := cmd.Flags().GetBool("all")
 
-		tasks := taskRepository.GetList()
+		tasks := taskRepository.GetList(all)
 
 		tbl, err := prettytable.NewTable([]prettytable.Column{
 			{Header: "ID", MinWidth: 3},
@@ -26,7 +27,7 @@ var listCmd = &cobra.Command{
 		}
 		tbl.Separator = " "
 
-		onlyListFlg, _ := cmd.PersistentFlags().GetBool("only-list")
+		onlyListFlg, _ := cmd.Flags().GetBool("only-list")
 		if onlyListFlg {
 			tbl.NoHeader = true
 		}
@@ -42,6 +43,7 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	listCmd.PersistentFlags().BoolP("only-list", "", false, "display list only")
+	listCmd.Flags().BoolP("only-list", "", false, "display list only")
+	listCmd.Flags().BoolP("all", "a", false, "display all list")
 	rootCmd.AddCommand(listCmd)
 }

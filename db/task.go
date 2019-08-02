@@ -19,7 +19,7 @@ type Task struct {
 type TaskRepository interface {
 	Insert(task *Task) error
 	Update(task *Task) error
-	GetList() *[]Task
+	GetList(allFlag bool) *[]Task
 	FindById(id int) *Task
 	DeleteTask(id int)
 }
@@ -53,12 +53,16 @@ func (p *TaskRepositoryImpl) FindById(id int) *Task {
 	return &task
 }
 
-func (t *TaskRepositoryImpl) GetList() *[]Task {
+func (t *TaskRepositoryImpl) GetList(allFlag bool) *[]Task {
 	db := getDbConnection()
 	defer db.Close()
 
 	tasks := []Task{}
-	db.Where("hide_flg = false").Order("id desc").Find(&tasks)
+	if !allFlag {
+		db = db.Where("hide_flg = false")
+	}
+	db = db.Order("id desc")
+	db.Find(&tasks)
 
 	return &tasks
 }
