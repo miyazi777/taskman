@@ -18,6 +18,7 @@ var listCmd = &cobra.Command{
 			{Header: "TASK", MinWidth: 32},
 			{Header: "STATUS", MinWidth: 12},
 			{Header: "LABEL", MinWidth: 16},
+			{Header: "PRIORITY", MinWidth: 1},
 			{Header: "DUE_DATE", MinWidth: 10},
 		}...)
 		if err != nil {
@@ -32,7 +33,7 @@ var listCmd = &cobra.Command{
 
 		for _, task := range *tasks {
 			d := task.DueDate
-			tbl.AddRow(task.ID, task.Title, task.Status, task.Label, d.Format("2006/01/02"))
+			tbl.AddRow(task.ID, task.Title, task.Status, task.Label, task.Priority, d.Format("2006/01/02"))
 		}
 		tbl.Print()
 
