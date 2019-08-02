@@ -17,7 +17,7 @@ var listCmd = &cobra.Command{
 			{Header: "ID", MinWidth: 3},
 			{Header: "TASK", MinWidth: 32},
 			{Header: "STATUS", MinWidth: 12},
-			{Header: "LABEL", MinWidth: 64},
+			{Header: "LABEL", MinWidth: 16},
 			{Header: "DUE_DATE", MinWidth: 10},
 		}...)
 		if err != nil {
