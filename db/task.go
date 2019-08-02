@@ -9,6 +9,7 @@ import (
 type Task struct {
 	gorm.Model
 	Title    string    `gorm:"type:varchar(255);not null"`
+	Label    string    `gorm:"type:varchar(64)"`
 	Status   string    `gorm:"type:varchar(32)"`
 	DueDate  time.Time `gorm:""`
 	Priority int       `gorm:""`
