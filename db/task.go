@@ -33,7 +33,7 @@ func (t *Task) GetDueDate() string {
 type TaskRepository interface {
 	Insert(task *Task) error
 	Update(task *Task) error
-	GetList(allFlag bool) *[]Task
+	GetList(allFlag bool, label string) *[]Task
 	FindById(id int) *Task
 	DeleteTask(id int)
 }
@@ -67,13 +67,16 @@ func (p *TaskRepositoryImpl) FindById(id int) *Task {
 	return &task
 }
 
-func (t *TaskRepositoryImpl) GetList(allFlag bool) *[]Task {
+func (t *TaskRepositoryImpl) GetList(allFlag bool, label string) *[]Task {
 	db := getDbConnection()
 	defer db.Close()
 
 	tasks := []Task{}
 	if !allFlag {
 		db = db.Where("hide_flg = false")
+	}
+	if label != "" {
+		db = db.Where("label = ?", label)
 	}
 	db = db.Order("id desc")
 	db.Find(&tasks)

@@ -11,8 +11,9 @@ var listCmd = &cobra.Command{
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		all, _ := cmd.Flags().GetBool("all")
+		label, _ := cmd.Flags().GetString("label")
 
-		tasks := taskRepository.GetList(all)
+		tasks := taskRepository.GetList(all, label)
 
 		tbl, err := prettytable.NewTable([]prettytable.Column{
 			{Header: "ID", MinWidth: 3},
@@ -43,6 +44,7 @@ var listCmd = &cobra.Command{
 
 func init() {
 	listCmd.Flags().BoolP("only-list", "", false, "display list only")
+	listCmd.Flags().StringP("label", "l", "", "label filter")
 	listCmd.Flags().BoolP("all", "a", false, "display all list")
 	rootCmd.AddCommand(listCmd)
 }
