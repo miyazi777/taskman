@@ -33,8 +33,7 @@ var listCmd = &cobra.Command{
 		}
 
 		for _, task := range *tasks {
-			d := task.DueDate
-			tbl.AddRow(task.ID, task.GetTitle(), task.Status, task.Label, task.Priority, d.Format("2006/01/02"))
+			tbl.AddRow(task.ID, task.GetTitle(), task.Status, task.Label, task.Priority, task.GetDueDate())
 		}
 		tbl.Print()
 

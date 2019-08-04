@@ -26,6 +26,10 @@ func (t *Task) GetTitle() string {
 	return displayTitle
 }
 
+func (t *Task) GetDueDate() string {
+	return t.DueDate.Format("2006/01/02")
+}
+
 type TaskRepository interface {
 	Insert(task *Task) error
 	Update(task *Task) error
