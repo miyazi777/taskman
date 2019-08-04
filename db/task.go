@@ -1,9 +1,11 @@
 package db
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
-	"time"
 )
 
 type Task struct {
@@ -14,6 +16,14 @@ type Task struct {
 	DueDate  time.Time `gorm:""`
 	Priority int       `gorm:""`
 	HideFlg  bool      `gorm:"type:boolean;not null;default false"`
+}
+
+func (t *Task) GetTitle() string {
+	displayTitle := t.Title
+	if t.HideFlg {
+		displayTitle = fmt.Sprintf("(close) %s\n", t.Title)
+	}
+	return displayTitle
 }
 
 type TaskRepository interface {
