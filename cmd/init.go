@@ -14,8 +14,15 @@ var initCmd = &cobra.Command{
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		db.InitDb()
-		fmt.Println("init command.")
+		var stdin string
+		fmt.Print("Initialize ok(Y/n) > ")
+		fmt.Scan(&stdin)
+		if stdin == "Y" {
+			db.InitDb()
+			fmt.Println("init command.")
+		} else {
+			fmt.Println("Don't initialize.")
+		}
 
 		return nil
 	},
