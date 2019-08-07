@@ -12,7 +12,10 @@ var currentCmd = &cobra.Command{
 	Short: "",
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("project current")
+
+		project := projectRepository.GetCurrentProject()
+
+		fmt.Printf("Current project current ID:%d Title:%s\n", project.ID, project.Title)
 
 		return nil
 	},
