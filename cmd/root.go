@@ -19,6 +19,7 @@ import (
 	"os"
 
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/miyazi777/taskman/cmd/project"
 	"github.com/miyazi777/taskman/db"
 	"github.com/miyazi777/taskman/repository"
 	"github.com/spf13/cobra"
@@ -55,6 +56,7 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.AddCommand(project.GetProjectCmd())
 	setup()
 	cobra.OnInitialize(initConfig)
 
