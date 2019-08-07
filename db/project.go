@@ -13,6 +13,7 @@ type Project struct {
 
 type ProjectRepository interface {
 	Insert(project *Project) error
+	Update(project *Project) error
 	GetList() *[]Project
 	CheckExistsCurrentProject() bool
 }
@@ -24,6 +25,14 @@ func (t *ProjectRepositoryImpl) Insert(project *Project) error {
 	defer db.Close()
 
 	db.Create(project)
+	return nil
+}
+
+func (t *ProjectRepositoryImpl) Update(project *Project) error {
+	db := getDbConnection()
+	defer db.Close()
+
+	db.Update(project)
 	return nil
 }
 
@@ -44,7 +53,7 @@ func (t *ProjectRepositoryImpl) CheckExistsCurrentProject() bool {
 
 	var count int
 	projects := []Project{}
-	db.Where("").Find(&projects).Count(&count)
+	db.Where("current_flg = true").Find(&projects).Count(&count)
 
 	var result bool = false
 	if count > 0 {

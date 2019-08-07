@@ -26,7 +26,7 @@ var addCmd = &cobra.Command{
 		}
 
 		var currentFlg bool = false
-		if projectRepository.CheckExistsCurrentProject() {
+		if !projectRepository.CheckExistsCurrentProject() {
 			currentFlg = true
 		}
 
