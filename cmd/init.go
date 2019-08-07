@@ -18,6 +18,9 @@ var initCmd = &cobra.Command{
 		fmt.Print("Initialize ok(Y/n) > ")
 		fmt.Scan(&stdin)
 		if stdin == "Y" {
+			if err := db.DeleteDbFile(); err != nil {
+				return err
+			}
 			if err := memoRepository.DeleteAllMemo(); err != nil {
 				return err
 			}

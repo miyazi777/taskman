@@ -51,3 +51,10 @@ func getWorkDirPath() string {
 	}
 	return filepath.Join(home, ".taskman")
 }
+
+func DeleteDbFile() error {
+	if err := os.Remove(getDbPath()); err != nil {
+		return err
+	}
+	return nil
+}
