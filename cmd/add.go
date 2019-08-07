@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/miyazi777/taskman/db"
@@ -25,6 +26,10 @@ var addCmd = &cobra.Command{
 		}
 
 		project := projectRepository.GetCurrentProject()
+		if project == nil {
+			return errors.New("Nothing project.")
+		}
+
 		task := db.Task{Title: title, ProjectID: project.ID}
 		taskRepository.Insert(&task)
 
