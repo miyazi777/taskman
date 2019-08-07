@@ -62,7 +62,7 @@ func (p *TaskRepositoryImpl) FindById(id int) *Task {
 	defer db.Close()
 
 	task := Task{}
-	if db.First(&task, id).RecordNotFound() {
+	if db.Scopes(joinCurrentProject).First(&task, id).RecordNotFound() {
 		return nil
 	}
 	return &task
@@ -83,7 +83,7 @@ func (t *TaskRepositoryImpl) GetList(allFlag bool, label string, sort string) *[
 		sortCond := fmt.Sprintf("%s asc", sort)
 		db = db.Order(sortCond)
 	}
-	db = db.Order("id desc").Scopes(JoinCurrentProject)
+	db = db.Order("id desc").Scopes(joinCurrentProject)
 	db.Find(&tasks)
 
 	return &tasks
@@ -96,6 +96,6 @@ func (p *TaskRepositoryImpl) DeleteTask(id int) {
 	db.Delete(Task{}, "id = ?", id)
 }
 
-func JoinCurrentProject(db *gorm.DB) *gorm.DB {
+func joinCurrentProject(db *gorm.DB) *gorm.DB {
 	return db.Joins("join projects on projects.id = tasks.project_id and projects.current_flg = 1")
 }
