@@ -18,8 +18,11 @@ var initCmd = &cobra.Command{
 		fmt.Print("Initialize ok(Y/n) > ")
 		fmt.Scan(&stdin)
 		if stdin == "Y" {
+			if err := memoRepository.DeleteAllMemo(); err != nil {
+				return err
+			}
 			db.InitDb()
-			fmt.Println("init command.")
+			fmt.Println("Initialized taskman.")
 		} else {
 			fmt.Println("Don't initialize.")
 		}

@@ -1,14 +1,16 @@
 package repository
 
 import (
-	homedir "github.com/mitchellh/go-homedir"
 	"os"
 	"path/filepath"
+
+	homedir "github.com/mitchellh/go-homedir"
 )
 
 type MemoRepository interface {
 	AddMemo(title string) error
 	ChangeMemo(oldTitle string, newTitle string) error
+	DeleteAllMemo() error
 }
 
 type MemoRepositoryImpl struct{}
@@ -27,6 +29,13 @@ func (m *MemoRepositoryImpl) ChangeMemo(oldTitle string, newTitle string) error 
 	newTitlePath := GetMemoPath(newTitle)
 	err := os.Rename(oldTitlePath, newTitlePath)
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *MemoRepositoryImpl) DeleteAllMemo() error {
+	if err := os.RemoveAll(getWorkDirPath()); err != nil {
 		return err
 	}
 	return nil
