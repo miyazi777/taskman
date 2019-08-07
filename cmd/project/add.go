@@ -25,9 +25,12 @@ var addCmd = &cobra.Command{
 			title = args[0]
 		}
 
-		// TODO current projectが1件もない時の処理を追加
+		var currentFlg bool = false
+		if projectRepository.CheckExistsCurrentProject() {
+			currentFlg = true
+		}
 
-		project := db.Project{Title: title}
+		project := db.Project{Title: title, CurrentFlg: currentFlg}
 		projectRepository.Insert(&project)
 
 		fmt.Printf("Add project : %s\n", title)
