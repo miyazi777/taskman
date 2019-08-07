@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/tatsushid/go-prettytable"
 )
 
 // initCmd represents the info command
@@ -13,6 +14,27 @@ var listCmd = &cobra.Command{
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Println("project list")
+		projects := projectRepository.GetList()
+
+		tbl, err := prettytable.NewTable([]prettytable.Column{
+			{Header: "ID", MinWidth: 3},
+			{Header: "PROJECT", MinWidth: 32},
+			{Header: "CURRENT", MinWidth: 1},
+		}...)
+		if err != nil {
+			return err
+		}
+
+		tbl.Separator = " "
+
+		for _, project := range *projects {
+			var current string = ""
+			if project.CurrentFlg {
+				current = "*"
+			}
+			tbl.AddRow(project.ID, project.Title, current)
+		}
+		tbl.Print()
 
 		return nil
 	},
