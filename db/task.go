@@ -22,7 +22,7 @@ type Task struct {
 func (t *Task) GetTitle() string {
 	displayTitle := t.Title
 	if t.HideFlg {
-		displayTitle = fmt.Sprintf("(close) %s\n", t.Title)
+		displayTitle = fmt.Sprintf("(close) %s", t.Title)
 	}
 	return displayTitle
 }
