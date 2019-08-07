@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/miyazi777/taskman/db"
 	"github.com/miyazi777/taskman/shell"
 	"github.com/spf13/cobra"
@@ -23,7 +24,8 @@ var addCmd = &cobra.Command{
 			title = args[0]
 		}
 
-		task := db.Task{Title: title}
+		project := projectRepository.GetCurrentProject()
+		task := db.Task{Title: title, ProjectID: project.ID}
 		taskRepository.Insert(&task)
 
 		memoRepository.AddMemo(title)

@@ -10,12 +10,13 @@ import (
 
 type Task struct {
 	gorm.Model
-	Title    string    `gorm:"type:varchar(255);not null"`
-	Label    string    `gorm:"type:varchar(64)"`
-	Status   string    `gorm:"type:varchar(32)"`
-	DueDate  time.Time `gorm:""`
-	Priority int       `gorm:""`
-	HideFlg  bool      `gorm:"type:boolean;not null;default false"`
+	Title     string    `gorm:"type:varchar(255);not null"`
+	Label     string    `gorm:"type:varchar(64)"`
+	Status    string    `gorm:"type:varchar(32)"`
+	DueDate   time.Time `gorm:""`
+	Priority  int       `gorm:""`
+	HideFlg   bool      `gorm:"type:boolean;not null;default false"`
+	ProjectID uint
 }
 
 func (t *Task) GetTitle() string {
@@ -82,7 +83,7 @@ func (t *TaskRepositoryImpl) GetList(allFlag bool, label string, sort string) *[
 		sortCond := fmt.Sprintf("%s asc", sort)
 		db = db.Order(sortCond)
 	}
-	db = db.Order("id desc")
+	db = db.Order("id desc").Scopes(JoinCurrentProject)
 	db.Find(&tasks)
 
 	return &tasks
@@ -93,4 +94,8 @@ func (p *TaskRepositoryImpl) DeleteTask(id int) {
 	defer db.Close()
 
 	db.Delete(Task{}, "id = ?", id)
+}
+
+func JoinCurrentProject(db *gorm.DB) *gorm.DB {
+	return db.Joins("join projects on projects.id = tasks.project_id and projects.current_flg = 1")
 }

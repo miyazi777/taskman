@@ -17,7 +17,3 @@ var projectCmd = &cobra.Command{
 func GetProjectCmd() *cobra.Command {
 	return projectCmd
 }
-
-//func GetProjectRepository() *db.ProjectRepository {
-//	return projectRepository
-//}

@@ -28,6 +28,7 @@ import (
 
 var cfgFile string
 
+var projectRepository db.ProjectRepository
 var taskRepository db.TaskRepository
 var memoRepository repository.MemoRepository
 
@@ -97,6 +98,7 @@ func initConfig() {
 }
 
 func setup() {
+	projectRepository = &db.ProjectRepositoryImpl{}
 	taskRepository = &db.TaskRepositoryImpl{}
 	memoRepository = &repository.MemoRepositoryImpl{}
 }
