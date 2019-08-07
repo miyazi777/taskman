@@ -16,6 +16,7 @@ type ProjectRepository interface {
 	Update(project *Project) error
 	GetList() *[]Project
 	CheckExistsCurrentProject() bool
+	GetCurrentProject() *Project
 }
 
 type ProjectRepositoryImpl struct{}
@@ -32,7 +33,7 @@ func (t *ProjectRepositoryImpl) Update(project *Project) error {
 	db := getDbConnection()
 	defer db.Close()
 
-	db.Update(project)
+	db.Save(project)
 	return nil
 }
 
@@ -47,17 +48,39 @@ func (t *ProjectRepositoryImpl) GetList() *[]Project {
 	return &projects
 }
 
+func (t *ProjectRepositoryImpl) FindById(id int) *Project {
+	db := getDbConnection()
+	defer db.Close()
+
+	project := Project{}
+	if db.First(&project, id).RecordNotFound() {
+		return nil
+	}
+	return &project
+}
+
 func (t *ProjectRepositoryImpl) CheckExistsCurrentProject() bool {
 	db := getDbConnection()
 	defer db.Close()
 
 	var count int
 	projects := []Project{}
-	db.Where("current_flg = true").Find(&projects).Count(&count)
+	db.Where("current_flg = 1").Find(&projects).Count(&count)
 
 	var result bool = false
 	if count > 0 {
 		result = true
 	}
 	return result
+}
+
+func (t *ProjectRepositoryImpl) GetCurrentProject() *Project {
+	db := getDbConnection()
+	defer db.Close()
+
+	var project = Project{}
+	if db.Where("current_flg = 1").First(&project).RecordNotFound() {
+		return nil
+	}
+	return &project
 }

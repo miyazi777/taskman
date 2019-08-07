@@ -1,7 +1,8 @@
 package project
 
 import (
-	"fmt"
+	"errors"
+	"strconv"
 
 	"github.com/spf13/cobra"
 )
@@ -11,8 +12,35 @@ var selectCmd = &cobra.Command{
 	Use:   "select",
 	Short: "",
 	Long:  "",
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) == 0 {
+			return errors.New("Requires task id.")
+		}
+
+		_, err := strconv.Atoi(args[0])
+		if err != nil {
+			return errors.New("Numeric error.")
+		}
+		return nil
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("project select")
+		id, _ := strconv.Atoi(args[0])
+
+		oldCurrentProject := projectRepository.GetCurrentProject()
+		if oldCurrentProject == nil {
+			return errors.New("Notfound current project.")
+		}
+
+		newCurreentProject := projectRepository.FindById(id)
+		if newCurreentProject == nil {
+			return errors.New("Notfound project by id.")
+		}
+
+		oldCurrentProject.CurrentFlg = false
+		projectRepository.Update(oldCurrentProject)
+
+		newCurreentProject.CurrentFlg = true
+		projectRepository.Update(newCurreentProject)
 
 		return nil
 	},
