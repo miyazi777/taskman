@@ -1,17 +1,19 @@
 package db
 
 import (
+	"os"
+	"path/filepath"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
 	homedir "github.com/mitchellh/go-homedir"
-	"os"
-	"path/filepath"
 )
 
 func InitDb() {
 	db := getDbConnection()
 	defer db.Close()
 
+	db.AutoMigrate(&Project{})
 	db.AutoMigrate(&Task{})
 }
 

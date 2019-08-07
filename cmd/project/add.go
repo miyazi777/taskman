@@ -3,6 +3,8 @@ package project
 import (
 	"fmt"
 
+	"github.com/miyazi777/taskman/db"
+	"github.com/miyazi777/taskman/shell"
 	"github.com/spf13/cobra"
 )
 
@@ -12,8 +14,23 @@ var addCmd = &cobra.Command{
 	Short: "",
 	Long:  "",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("project add")
+		var title string
+		var err error
+		if len(args) == 0 {
+			title, err = shell.EditTextByEditor("")
+			if err != nil {
+				return err
+			}
+		} else {
+			title = args[0]
+		}
 
+		// TODO current projectが1件もない時の処理を追加
+
+		project := db.Project{Title: title}
+		projectRepository.Insert(&project)
+
+		fmt.Printf("Add project : %s\n", title)
 		return nil
 	},
 }
