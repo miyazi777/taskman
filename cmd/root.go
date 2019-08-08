@@ -47,15 +47,17 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if cmd.Name() == "init" {
+			return nil
+		}
+		return db.ExistsDbFile()
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	if err := db.ExistsDbFile(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
