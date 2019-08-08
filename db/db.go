@@ -58,3 +58,9 @@ func DeleteDbFile() error {
 	}
 	return nil
 }
+
+func ExistsDbFile() error {
+	dbFilePath := getDbPath()
+	_, err := os.Stat(dbFilePath)
+	return err
+}
