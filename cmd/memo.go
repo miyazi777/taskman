@@ -3,10 +3,11 @@ package cmd
 import (
 	"errors"
 
+	"strconv"
+
 	"github.com/miyazi777/taskman/repository"
 	"github.com/miyazi777/taskman/shell"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
 var memoCmd = &cobra.Command{
@@ -32,7 +33,7 @@ var memoCmd = &cobra.Command{
 			return errors.New("Nothing task.")
 		}
 
-		memoPath := repository.GetMemoPath(task.Title)
+		memoPath := repository.GetMemoPath(task.ProjectID, task.Title)
 
 		err := shell.StartEditor(memoPath)
 		if err != nil {

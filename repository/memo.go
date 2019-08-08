@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -8,15 +9,21 @@ import (
 )
 
 type MemoRepository interface {
-	AddMemo(title string) error
-	ChangeMemo(oldTitle string, newTitle string) error
+	AddProjectSpace(projectId uint) error
+	AddMemo(projectId uint, title string) error
+	ChangeMemo(projectId uint, oldTitle string, newTitle string) error
 	DeleteAllMemo() error
 }
 
 type MemoRepositoryImpl struct{}
 
-func (m *MemoRepositoryImpl) AddMemo(title string) error {
-	path := GetMemoPath(title)
+func (m *MemoRepositoryImpl) AddProjectSpace(projectId uint) error {
+	workDirPath := getProjectDirPath(projectId)
+	return os.Mkdir(workDirPath, 0755)
+}
+
+func (m *MemoRepositoryImpl) AddMemo(projectId uint, title string) error {
+	path := GetMemoPath(projectId, title)
 	_, err := os.Create(path)
 	if err != nil {
 		return err
@@ -24,9 +31,9 @@ func (m *MemoRepositoryImpl) AddMemo(title string) error {
 	return nil
 }
 
-func (m *MemoRepositoryImpl) ChangeMemo(oldTitle string, newTitle string) error {
-	oldTitlePath := GetMemoPath(oldTitle)
-	newTitlePath := GetMemoPath(newTitle)
+func (m *MemoRepositoryImpl) ChangeMemo(projectId uint, oldTitle string, newTitle string) error {
+	oldTitlePath := GetMemoPath(projectId, oldTitle)
+	newTitlePath := GetMemoPath(projectId, newTitle)
 	err := os.Rename(oldTitlePath, newTitlePath)
 	if err != nil {
 		return err
@@ -41,9 +48,14 @@ func (m *MemoRepositoryImpl) DeleteAllMemo() error {
 	return nil
 }
 
-func GetMemoPath(title string) string {
+func GetMemoPath(projectId uint, title string) string {
 	fileName := title + ".md"
-	return filepath.Join(getWorkDirPath(), fileName)
+	return filepath.Join(getProjectDirPath(projectId), fileName)
+}
+
+func getProjectDirPath(projectId uint) string {
+	workPath := getWorkDirPath()
+	return filepath.Join(workPath, fmt.Sprint(projectId))
 }
 
 // TODO workDir構造体を作成する

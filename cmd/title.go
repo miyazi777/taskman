@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"errors"
+	"strconv"
+
 	"github.com/miyazi777/taskman/shell"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
 var titleCmd = &cobra.Command{
@@ -44,7 +45,7 @@ var titleCmd = &cobra.Command{
 		// TODO 入力されたファイル名がすでに存在しているかチェックする
 
 		taskRepository.Update(task)
-		memoRepository.ChangeMemo(oldTitle, task.Title)
+		memoRepository.ChangeMemo(task.ProjectID, oldTitle, task.Title)
 
 		return nil
 	},

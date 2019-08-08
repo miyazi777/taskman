@@ -33,7 +33,7 @@ var addCmd = &cobra.Command{
 		task := db.Task{Title: title, ProjectID: project.ID}
 		taskRepository.Insert(&task)
 
-		memoRepository.AddMemo(title)
+		memoRepository.AddMemo(task.ProjectID, title)
 
 		fmt.Printf("Add task : %s\n", title)
 		return nil

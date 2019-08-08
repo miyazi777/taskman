@@ -33,6 +33,8 @@ var addCmd = &cobra.Command{
 		project := db.Project{Title: title, CurrentFlg: currentFlg}
 		projectRepository.Insert(&project)
 
+		memoRepository.AddProjectSpace(project.ID)
+
 		fmt.Printf("Add project : %s\n", title)
 		return nil
 	},
